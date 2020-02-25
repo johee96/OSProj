@@ -31,17 +31,14 @@ public class ChatServerProcessThread extends Thread {
                 }
 
                 String[] tokens = request.split(":");
-                switch (tokens[0]) {
-                    case "join":
-                        doJoin(tokens[1], printWriter);
-                        break;
-                    case "message":
-                        doMessage(tokens[1]);
-                        break;
-                    case "quit":
-                    default:
-                        doQuit(printWriter);
-                        break;
+                if("join".equals(tokens[0])) {
+                    doJoin(tokens[1], printWriter);
+                }
+                else if("message".equals(tokens[0])) {
+                    doMessage(tokens[1]);
+                }
+                else if("quit".equals(tokens[0])) {
+                    doQuit(printWriter);
                 }
             }
 
@@ -83,14 +80,15 @@ public class ChatServerProcessThread extends Thread {
 
     private void broadcast(String data) {
         synchronized (listWriters) {
+            for (PrintWriter printWriter : listWriters) {
+                printWriter.println(data);
+                printWriter.flush();
+            }
         }
-        for (PrintWriter printWriter : listWriters) {
-            printWriter.println(data);
-            printWriter.flush();
-        }
+
     }
 
-   private void consoleLog(String log) {
+    private void consoleLog(String log) {
         System.out.println(log);
     }
 }

@@ -7,10 +7,9 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
-
-
 public class ChatClient {
-    private static final String SERVER_IP = "172.20.10.8";
+    private static final String SERVER_IP = "127.0.0.1";
+
     private static final int SERVER_PORT = 5000;
 
     public static void main(String[] args) {
@@ -35,10 +34,11 @@ public class ChatClient {
         try {
             socket.connect(new InetSocketAddress(SERVER_IP, SERVER_PORT));
             consoleLog("채팅방에 입장하였습니다.");
-            new ChatGUI(name, socket);
+            System.out.println("name:"+name);
+            new ChatGUI(name, socket).show();
 
-            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-            String request = "join:" + name + "\r\n";
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8),true);
+            String request = "join:" +  name + "\r\n";
             printWriter.println(request);
         } catch (IOException e) {
             e.printStackTrace();
