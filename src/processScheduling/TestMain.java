@@ -11,7 +11,10 @@ public class TestMain {
         printProcessInfo(RRSchedulingResult);
         ArrayList<ProcessInfo> SPNSchedulingResult = scheduling.SPN_Scheduling(getDummyProcess());
         printProcessInfo(SPNSchedulingResult);
-
+        ArrayList<ProcessInfo> SRTNSchedulingResult = scheduling.SRTN_Scheduling(getDummyProcess());
+        printProcessInfo(SRTNSchedulingResult);
+        ArrayList<ProcessInfo> HRRNSchedulingResult = scheduling.HRRN_Scheduling(getDummyProcess());
+        printProcessInfo(HRRNSchedulingResult);
     }
 
     private static ArrayList<ProcessInfo> getDummyProcess() {
@@ -28,8 +31,7 @@ public class TestMain {
         System.out.println("---------------------------------");
 
         double TTSum = 0;
-        for (int i = 0; i < processInfo.size(); i++) {
-            ProcessInfo tmp = processInfo.get(i);
+        for (ProcessInfo tmp : processInfo) {
             System.out.println("Pid: " + tmp.getpId() + " Arrival Time: " + tmp.getArrival_time()
                     + " BurstTime: " + tmp.getBurst_time() + " WaitingTime: " + tmp.getWaiting_time() + " TurnaroundTime: " + tmp.getTurnaround_time()
                     + " NormalizedTT: " + tmp.getNormalizedTT());

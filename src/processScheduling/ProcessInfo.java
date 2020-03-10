@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 public class ProcessInfo implements Comparable<ProcessInfo> {
     private int pId, arrival_time, burst_time, waiting_time, turnaround_time;
-    private double NormalizedTT;
+    private double normalizedTT;
     private int remainingBurst_time;
 
     public ProcessInfo(int pId, int arrival_time, int burst_time) {
@@ -13,7 +13,6 @@ public class ProcessInfo implements Comparable<ProcessInfo> {
         this.burst_time = burst_time;
         this.remainingBurst_time = burst_time;
     }
-
 
     public int getpId() {
         return pId;
@@ -52,25 +51,26 @@ public class ProcessInfo implements Comparable<ProcessInfo> {
     }
 
     public void setNormalizedTT(double normalizedTT) {
-        NormalizedTT = normalizedTT;
+        this.normalizedTT = normalizedTT;
     }
 
     public double getNormalizedTT() {
-        return NormalizedTT;
+        return normalizedTT;
     }
 
     @Override
     public int compareTo(ProcessInfo o) {
         //SPN_Scheduling를 위해 burst time 으로 정렬
         if (this.burst_time < o.getBurst_time()) return -1;
-        else if (this.burst_time < o.getBurst_time()) return 1;
+        else if (this.burst_time > o.getBurst_time()) return 1;
         return 0;
     }
 
-    static Comparator<ProcessInfo> idComparator = new Comparator<ProcessInfo>() {
-        @Override
-        public int compare(ProcessInfo a, ProcessInfo b) {
-            return  a.getpId()-b.getpId();
-        }
+    static Comparator<ProcessInfo> idComparator = (a, b) -> a.getpId() - b.getpId();
+
+    static Comparator<ProcessInfo> HRRNComparator = (a, b) -> {
+        int priorityA = (a.getWaiting_time() + a.getBurst_time()) / a.getBurst_time();
+        int priorityB = (b.getWaiting_time() + b.getBurst_time()) / b.getBurst_time();
+        return priorityA - priorityB;
     };
 }
