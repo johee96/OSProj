@@ -2,7 +2,7 @@ package sync;
 
 import java.util.concurrent.Semaphore;
 
-public class ProducerConsumerProblem {
+public class ProducerConsumerProblemSema {
     public static void main(String[] args) {
         Buffer buffer = new Buffer(100);
         Producer producer = new Producer(buffer, 10000);
